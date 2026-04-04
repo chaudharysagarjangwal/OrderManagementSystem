@@ -29,7 +29,6 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles;
-//
 //    @Override
 //    public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return roles.stream()

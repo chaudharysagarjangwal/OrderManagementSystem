@@ -37,20 +37,20 @@ public class JwtFilter extends OncePerRequestFilter {
         final String token;
         final String email;
         //check if authorization header is present and starts wuth beare4r
-        if (authHeader == null || authHeader.startsWith("Bearer")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer")) {
             filterChain.doFilter(request, response);
             return;
         }
         //Extract jwt token from header
         token = authHeader.substring(7);
-        email = jwtUtil.ExtractEmail(token);
+        email = jwtUtil.extractEmail(token);
         //check if we have username and no authentication exist yet
         if (email != null) {
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
             //check if we have username and no authentication exist yet
 
-            if (jwtUtil.isTokenValid(token, String.valueOf(userDetails))) {
+            if (jwtUtil.isTokenValid(token, userDetails.getUsername())) {
 //                UsernamePasswordAuthenticationToken auth=new UsernamePasswordAuthenticationToken(userDetails);
               //  List<SimpleGrantedAuthority> authorities = userDetails.get.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
