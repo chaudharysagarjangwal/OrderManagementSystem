@@ -37,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
         final String token;
         final String email;
         //check if authorization header is present and starts wuth beare4r
-        if (authHeader == null || !authHeader.startsWith("Bearer")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -60,7 +60,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 //update the security  context
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
-            filterChain.doFilter(request,response);
+           // filterChain.doFilter(request,response);
         }
+        filterChain.doFilter(request,response);
     }
 }

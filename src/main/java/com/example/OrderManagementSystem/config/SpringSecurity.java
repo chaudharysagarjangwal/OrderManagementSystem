@@ -37,7 +37,7 @@ public class SpringSecurity {
                 // Define URL access rules
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // login & register open
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("USER")
                         .requestMatchers("/products/**").hasRole("ADMIN")
                         .requestMatchers("/orders/**").hasRole("USER")
                         .requestMatchers("/user/**").permitAll()  // normal users endpoints
