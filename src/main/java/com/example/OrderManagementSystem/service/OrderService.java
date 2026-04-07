@@ -3,7 +3,7 @@ package com.example.OrderManagementSystem.service;
 import com.example.OrderManagementSystem.KafkaProducer.OrderProducer;
 import com.example.OrderManagementSystem.dto.OrderRequestDto;
 import com.example.OrderManagementSystem.dto.OrderResponseDto;
-import com.example.OrderManagementSystem.exception.ResourceNotFoundException;
+import com.example.OrderManagementSystem.exception.InsufficientStockException;
 import com.example.OrderManagementSystem.model.Orders;
 import com.example.OrderManagementSystem.model.Product;
 import com.example.OrderManagementSystem.reposistory.OrderReposistory;
@@ -21,10 +21,10 @@ public class OrderService {
     private OrderProducer orderProducer;
 
     public OrderResponseDto placeOrder(OrderRequestDto orderRequestDto) {
-        Product product = productReposistory.findById(orderRequestDto.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        Product product = productReposistory.findById(orderRequestDto.getProductId()).orElseThrow(() -> new InsufficientStockException("Product not found"));
         //check quantity available or not
         if (orderRequestDto.getQuantity()>product.getQuantity()){
-            throw new RuntimeException("Not Enough Stock");
+            throw new InsufficientStockException("Not Enough Stock");
         }
         //reduce stock
         product.setQuantity(product.getQuantity()- orderRequestDto.getQuantity());
