@@ -1,5 +1,6 @@
 package com.example.OrderManagementSystem.service;
 
+import com.example.OrderManagementSystem.KafkaProducer.OrderProducer;
 import com.example.OrderManagementSystem.dto.OrderRequestDto;
 import com.example.OrderManagementSystem.dto.OrderResponseDto;
 import com.example.OrderManagementSystem.exception.ResourceNotFoundException;
@@ -16,6 +17,8 @@ public class OrderService {
     private OrderReposistory orderReposistory;
     @Autowired
     private ProductReposistory productReposistory;
+    @Autowired
+    private OrderProducer orderProducer;
 
     public OrderResponseDto placeOrder(OrderRequestDto orderRequestDto) {
         Product product = productReposistory.findById(orderRequestDto.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
@@ -33,6 +36,8 @@ public class OrderService {
         orders.setTotalPrice(product.getPrice()*orderRequestDto.getQuantity());
 
         Orders saved=orderReposistory.save(orders);
+        //kafka producer
+        orderProducer.sendOrderEvent("Order created with ID: "+saved.getId());
 
         OrderResponseDto res=new OrderResponseDto();
         res.setOrderId(saved.getId());
