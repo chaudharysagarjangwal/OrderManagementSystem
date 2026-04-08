@@ -9,6 +9,7 @@ import com.example.OrderManagementSystem.model.Product;
 import com.example.OrderManagementSystem.reposistory.OrderReposistory;
 import com.example.OrderManagementSystem.reposistory.ProductReposistory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,7 +38,8 @@ public class OrderService {
 
         Orders saved=orderReposistory.save(orders);
         //kafka producer
-        orderProducer.sendOrderEvent("Order created with ID: "+saved.getId());
+        String userEmail= SecurityContextHolder.getContext().getAuthentication().getName();
+        orderProducer.sendOrderEvent("Order created with ID: "+ userEmail + "|" + saved.getId());
 
         OrderResponseDto res=new OrderResponseDto();
         res.setOrderId(saved.getId());
