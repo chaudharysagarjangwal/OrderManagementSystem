@@ -28,7 +28,16 @@ public class SpringSecurity {
     @Autowired
     private UserReposistory userReposistory;
     @Autowired
-    private JwtUtil jwtUtil;@Bean
+    private JwtUtil jwtUtil;
+    private static final String[] SWAGGER_URLS = {
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/v3/api-docs/**",
+            "/v3/api-docs",
+            "/swagger-resources/**",
+            "/webjars/**"
+    };
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 // Disable CSRF for APIs
@@ -36,6 +45,7 @@ public class SpringSecurity {
 
                 // Define URL access rules
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(SWAGGER_URLS).permitAll()
                         .requestMatchers("/auth/**").permitAll() // login & register open
                         .requestMatchers("/admin/**").hasRole("USER")
                         .requestMatchers("/products/**").hasRole("ADMIN")
