@@ -23,6 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userReposistory.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        System.out.println("🔍 Roles from DB: " + user.getRoles());
 
         // ✅ Use authorities() — does NOT add ROLE_ prefix automatically
         List<GrantedAuthority> authorities = user.getRoles().stream()
