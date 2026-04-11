@@ -54,7 +54,7 @@ spring:
             trust: smtp.gmail.com
 
 server:
-  port: PORT:8080
+  port: ${PORT:8080} 
 
 jwt:
   secret: "a8f3c9e7b2d4f6a1c9e8b7d6f5a4c3b2a1e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5"
