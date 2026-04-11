@@ -39,7 +39,7 @@ public class OrderService {
         Orders saved=orderReposistory.save(orders);
         //kafka producer
         String userEmail= SecurityContextHolder.getContext().getAuthentication().getName();
-        orderProducer.sendOrderEvent("Order created with ID: "+ userEmail + "|" + saved.getId());
+       // orderProducer.sendOrderEvent("Order created with ID: "+ userEmail + "|" + saved.getId());
 
         OrderResponseDto res=new OrderResponseDto();
         res.setOrderId(saved.getId());

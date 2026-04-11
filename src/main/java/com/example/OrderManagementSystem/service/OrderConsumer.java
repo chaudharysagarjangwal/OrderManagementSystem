@@ -14,7 +14,7 @@ public class OrderConsumer {
     private EmailService emailService;
     private static Logger logger= LoggerFactory.getLogger(OrderConsumer.class);
 
-    @KafkaListener(topics = "order-created", groupId = "order-group")
+   // @KafkaListener(topics = "order-created", groupId = "order-group")
     public void consume(String message) {
         String[] parts=message.split("\\|");
         String email=parts[0];
