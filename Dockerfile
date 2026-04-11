@@ -1,14 +1,16 @@
-# Use base image
-FROM eclipse-temurin:17-jdk-focal AS builder
+# Step 1: Build JAR
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
-# Set working directory
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy jar file into container
-COPY target/app.jar app.jar
+# Step 2: Run app
+FROM openjdk:17-jdk-slim
 
-# Expose port (Spring Boot default)
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
 
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
